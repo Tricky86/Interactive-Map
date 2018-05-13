@@ -1,0 +1,30 @@
+---
+title: "Interactive map of precipitation"
+author: "Charilaos Latinopoulos"
+date: "12/5/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## 12/5/2018
+
+```{r ,comment="",echo=FALSE,eval=TRUE,message=FALSE}
+library(leaflet)
+md_cities<-data.frame(name=c("Phoenix","Los Angeles","Sacramento","San Francisco","Denver","Washington","Miami","Atlanta","Chicago","New Orleans"), pop=c(7,14,17.2,20.7,13,38.9,59.8,48.3,34.4,56.8),
+                      lat=c(33.4484,34.0522,38.5816,37.7749,39.7392,47.7511,25.7617,33.7490,41.8781,29.9511),
+                      lng=c(-112.0740,-118.2437,-121.4944,-122.4194,-104.9903,-120.7401,-80.1918,-84.3880,-87.6298,-90.0715),
+                      col=c("yellow","yellow","yellow","yellow","yellow",
+                            "orange","red","orange","orange","red"))
+index=paste(as.character(md_cities$name),"-",as.character(md_cities$pop),
+            "inches of rain")
+md_cities$index<-index
+md_cities %>%
+        leaflet() %>%
+        addTiles() %>%
+        addCircleMarkers(weight=2,radius=sqrt(md_cities$pop)*3,color=md_cities$col, popup=md_cities$index) %>%
+        addLegend(labels=c("<30 inches","30-50 inches",">50 inches"),colors=c("yellow","orange","red"))
+```
+Average amount of precipitation (rainfall) in inches for US        
